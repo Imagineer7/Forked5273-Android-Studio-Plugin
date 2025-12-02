@@ -4,6 +4,20 @@ An [Android Studio](https://developer.android.com/studio) plugin intended to mak
 <!-- this is used to build the plugin, don't remove these comments -->
 <!-- Plugin description -->
 ## Features (Implemented)
+
+**FTC Project Initiation Wizard**
+- Automated cloning of FTC Robot Controller SDK
+- Support for full and shallow clones
+- One-click integration setup:
+  - FTC Dashboard (real-time telemetry)
+  - Road Runner (advanced path following)
+  - FTCLib (command-based framework)
+  - Pedro Pathing (autonomous paths)
+  - Sloth (hot reload)
+- Starter code generation (Java & Kotlin)
+- Team number customization
+- [Full Documentation](docs/FTC_PROJECT_WIZARD.md)
+
 Easy **Opmode Creation**
 - Support for **Java** & **Kotlin**
 - Selector for **LinearOpMode** vs **Iterative (Regular) Opmode**
@@ -11,11 +25,9 @@ Easy **Opmode Creation**
 
 ![Demo gif](https://github.com/user-attachments/assets/63721ec3-4e31-4f57-bb91-496abb123d77)
 ## Features (Planned)
-Easy **One-Button imports** for common libaries
-- Pedro Pathing, Roadrunner, FTCLib, NextFTC, etc.
 
 Quick **FSM Creation**
-- Simple Enum and Switch-Case
+- Simple Enum and Switch-Case (partially implemented)
 
 **Autofilling Constructors**
 - Automatic hardware map instantiation with class names
