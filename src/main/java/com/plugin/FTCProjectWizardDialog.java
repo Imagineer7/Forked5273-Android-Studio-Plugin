@@ -5,6 +5,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.ui.components.JBCheckBox;
 import com.intellij.ui.components.JBScrollPane;
 import org.jetbrains.annotations.Nullable;
@@ -295,5 +296,34 @@ public class FTCProjectWizardDialog extends DialogWrapper {
         panel.add(Box.createVerticalGlue(), gbc);
         
         return panel;
+    }
+    
+    @Override
+    protected ValidationInfo doValidate() {
+        // Validate project location
+        String projectLocation = projectLocationField.getText().trim();
+        if (projectLocation.isEmpty()) {
+            return new ValidationInfo("Project location is required", projectLocationField);
+        }
+        
+        File projectDir = new File(projectLocation);
+        File parentDir = projectDir.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            return new ValidationInfo("Parent directory does not exist", projectLocationField);
+        }
+        
+        // Validate branch name
+        String branch = branchField.getText().trim();
+        if (branch.isEmpty()) {
+            return new ValidationInfo("Branch name is required", branchField);
+        }
+        
+        // Validate team number format if provided
+        String teamNumber = teamNumberField.getText().trim();
+        if (!teamNumber.isEmpty() && !teamNumber.matches("\\d+")) {
+            return new ValidationInfo("Team number must be numeric", teamNumberField);
+        }
+        
+        return null;
     }
 }

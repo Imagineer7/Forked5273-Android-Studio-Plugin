@@ -25,10 +25,23 @@ public class FTCGitCloner {
     public void cloneRepository(File targetDir, String branch, boolean shallow, ProgressIndicator indicator) 
             throws GitAPIException {
         
+        // Validate input
+        if (branch == null || branch.trim().isEmpty()) {
+            throw new IllegalArgumentException("Branch name cannot be empty");
+        }
+        
         // Create parent directory if it doesn't exist
         File parentDir = targetDir.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
-            parentDir.mkdirs();
+            boolean created = parentDir.mkdirs();
+            if (!created) {
+                throw new IllegalStateException("Failed to create parent directory: " + parentDir);
+            }
+        }
+        
+        // Check if target directory already exists and is not empty
+        if (targetDir.exists() && targetDir.list() != null && targetDir.list().length > 0) {
+            throw new IllegalStateException("Target directory is not empty: " + targetDir);
         }
         
         // Set up JGit progress monitor that updates IntelliJ progress indicator

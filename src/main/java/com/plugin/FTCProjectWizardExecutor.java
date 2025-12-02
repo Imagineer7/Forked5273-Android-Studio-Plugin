@@ -101,6 +101,16 @@ public class FTCProjectWizardExecutor {
     }
     
     private void configureIntegrations(File projectDir) throws Exception {
+        // Check if TeamCode build.gradle exists
+        File teamCodeBuildGradle = new File(projectDir, "TeamCode/build.gradle");
+        if (!teamCodeBuildGradle.exists()) {
+            // Try alternative location
+            teamCodeBuildGradle = new File(projectDir, "TeamCode/build.gradle.kts");
+            if (!teamCodeBuildGradle.exists()) {
+                throw new Exception("TeamCode/build.gradle not found. The cloned repository may have a different structure.");
+            }
+        }
+        
         FTCGradleEditor gradleEditor = new FTCGradleEditor(projectDir);
         
         if (dialog.ftcDashboardCheck.isSelected()) {

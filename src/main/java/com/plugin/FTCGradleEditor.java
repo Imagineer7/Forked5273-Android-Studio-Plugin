@@ -68,7 +68,7 @@ public class FTCGradleEditor {
      */
     private void addMavenRepository(String repoUrl) throws IOException {
         if (!teamCodeBuildGradle.exists()) {
-            throw new FileNotFoundException("TeamCode/build.gradle not found");
+            throw new FileNotFoundException("TeamCode/build.gradle not found at: " + teamCodeBuildGradle.getAbsolutePath());
         }
         
         List<String> lines = Files.readAllLines(teamCodeBuildGradle.toPath());
@@ -109,6 +109,11 @@ public class FTCGradleEditor {
                     added = true;
                 }
                 newLines.add(line);
+            }
+            
+            // If still not added, it means dependencies block wasn't found either
+            if (!added) {
+                throw new IOException("Could not find a suitable place to add repository in build.gradle");
             }
         }
         
