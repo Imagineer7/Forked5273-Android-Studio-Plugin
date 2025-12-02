@@ -1,5 +1,6 @@
 package com.plugin;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
@@ -68,18 +69,22 @@ public class FTCProjectWizardExecutor {
                     
                     // Step 4: Show success message
                     indicator.setText("Project setup complete!");
-                    Messages.showInfoMessage(
-                        project,
-                        "FTC project has been created successfully at: " + projectLocation,
-                        "Success"
-                    );
-                    
+                    ApplicationManager.getApplication().invokeLater(() -> {
+                        Messages.showInfoMessage(
+                            project,
+                            "FTC project has been created successfully at: " + projectLocation,
+                            "Success"
+                        );
+                    });
+
                 } catch (Exception e) {
-                    Messages.showErrorDialog(
-                        project,
-                        "Failed to set up project: " + e.getMessage(),
-                        "Setup Failed"
-                    );
+                    ApplicationManager.getApplication().invokeLater(() -> {
+                        Messages.showErrorDialog(
+                            project,
+                            "Failed to set up project: " + e.getMessage(),
+                            "Setup Failed"
+                        );
+                    });
                     e.printStackTrace();
                 }
             }
@@ -129,6 +134,10 @@ public class FTCProjectWizardExecutor {
             gradleEditor.addPedroPathingIntegration();
         }
         
+        if (dialog.fullPanelsCheck.isSelected()) {
+            gradleEditor.addFullPanelsIntegration();
+        }
+
         if (dialog.slothCheck.isSelected()) {
             gradleEditor.addSlothIntegration();
         }

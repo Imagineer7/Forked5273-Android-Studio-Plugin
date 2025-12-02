@@ -4,6 +4,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.TextBrowseFolderListener;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.ui.components.JBCheckBox;
@@ -36,6 +37,7 @@ public class FTCProjectWizardDialog extends DialogWrapper {
     public final JBCheckBox roadRunnerCheck;
     public final JBCheckBox ftcLibCheck;
     public final JBCheckBox pedroPathingCheck;
+    public final JBCheckBox fullPanelsCheck;
     public final JBCheckBox slothCheck;
     
     // Step 4: Starter Code
@@ -54,10 +56,7 @@ public class FTCProjectWizardDialog extends DialogWrapper {
         FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
         descriptor.setTitle("Select Project Location");
         projectLocationField.addBrowseFolderListener(
-            "Select Project Location",
-            "Choose where to create the FTC project",
-            project,
-            descriptor
+            new TextBrowseFolderListener(descriptor)
         );
         
         // Set default location
@@ -82,6 +81,7 @@ public class FTCProjectWizardDialog extends DialogWrapper {
         roadRunnerCheck = new JBCheckBox("Road Runner Quick Start (advanced path following)", false);
         ftcLibCheck = new JBCheckBox("FTCLib (command-based framework)", false);
         pedroPathingCheck = new JBCheckBox("Pedro Pathing (autonomous paths)", false);
+        fullPanelsCheck = new JBCheckBox("Full Panels (telemetry and camera streaming)", false);
         slothCheck = new JBCheckBox("Sloth (hot reload for faster iteration)", false);
         
         // Initialize Step 4 fields
@@ -247,6 +247,9 @@ public class FTCProjectWizardDialog extends DialogWrapper {
         panel.add(pedroPathingCheck, gbc);
         
         gbc.gridy = 5;
+        panel.add(fullPanelsCheck, gbc);
+
+        gbc.gridy = 6;
         panel.add(slothCheck, gbc);
         
         // Filler
