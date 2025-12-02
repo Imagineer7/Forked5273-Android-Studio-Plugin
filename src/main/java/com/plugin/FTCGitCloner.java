@@ -91,13 +91,24 @@ public class FTCGitCloner {
         };
         
         // Perform the clone operation
-        Git.cloneRepository()
-            .setURI(FTC_SDK_URL)
-            .setDirectory(targetDir)
-            .setBranch(branch)
-            .setCloneAllBranches(false)
-            .setDepth(shallow ? 1 : Integer.MAX_VALUE)
-            .setProgressMonitor(progressMonitor)
-            .call();
+        // Note: setDepth(1) for shallow clone, or don't call setDepth() for full clone
+        if (shallow) {
+            Git.cloneRepository()
+                .setURI(FTC_SDK_URL)
+                .setDirectory(targetDir)
+                .setBranch(branch)
+                .setCloneAllBranches(false)
+                .setDepth(1)
+                .setProgressMonitor(progressMonitor)
+                .call();
+        } else {
+            Git.cloneRepository()
+                .setURI(FTC_SDK_URL)
+                .setDirectory(targetDir)
+                .setBranch(branch)
+                .setCloneAllBranches(false)
+                .setProgressMonitor(progressMonitor)
+                .call();
+        }
     }
 }
